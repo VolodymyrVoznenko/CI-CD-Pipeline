@@ -154,6 +154,33 @@
                     </archive>
                 </configuration>
             </plugin>
+
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-javadoc-plugin</artifactId>
+                <version>3.6.3</version>
+                <configuration>
+                    <source>21</source>
+                    <encoding>${project.build.sourceEncoding}</encoding>
+                    <doclint>all</doclint>
+                    <failOnError>true</failOnError>
+                </configuration>
+                <executions>
+                    <!-- Generation HTML Javadoc -->
+                    <execution>
+                        <id>generate-javadocs</id>
+                        <phase>verify</phase>
+                        <goals><goal>javadoc</goal></goals>
+                    </execution>
+                    <!-- Veröffentlichung javadoc.jar -->
+                    <execution>
+                        <id>attach-javadocs-jar</id>
+                        <phase>package</phase>
+                        <goals><goal>jar</goal></goals>
+                    </execution>
+                </executions>
+            </plugin>
+
         </plugins>
     </build>
 </project>
