@@ -194,12 +194,7 @@
                     <!-- падать сборке при найденных ошибках -->
                     <failOnError>true</failOnError>
 
-
-                    <plugins>
-
-                    </plugins>
                     <xmlOutput>true</xmlOutput>
-                    <omitVisitors></omitVisitors>
 
                     <!-- анализировать тестовый код -->
                     <!-- <includeTests>true</includeTests> -->
