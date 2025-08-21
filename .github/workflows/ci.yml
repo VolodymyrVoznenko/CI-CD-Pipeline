@@ -10,53 +10,73 @@ jobs:
   build-test:
     runs-on: ubuntu-latest
 
-    strategy:
-      fail-fast: false
-      matrix:
-        java: ["21"] # при желании добавь "21"
-
     steps:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Set up JDK ${{ matrix.java }}
+      - name: Set up JDK 20
         uses: actions/setup-java@v4
         with:
           distribution: temurin
-          java-version: ${{ matrix.java }}
+          java-version: "20"
           cache: maven
 
-      - name: Build & test (mvn verify)
-        run: mvn -B -ntp clean verify
+      # Если pom настроен на release 21, принудительно компилируем под 20 в CI
+      - name: Build & test (mvn verify @ JDK 20)
+        run: |
+          mvn -B -ntp \
+            -DskipTests=false \
+            -Dmaven.compiler.release=20 \
+            -Dmaven.compiler.source=20 \
+            -Dmaven.compiler.target=20 \
+            clean verify
 
-      - name: Upload test & QA reports
+      # ---- Артефакты ----
+      - name: Upload JARs
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: reports-${{ matrix.java }}
-          if-no-files-found: ignore
+          name: jar
+          if-no-files-found: warn
           path: |
-            **/target/surefire-reports/*
-            **/target/failsafe-reports/*
-            **/target/site/jacoco/*
-            **/target/jacoco*.exec
-#            **/target/spotbugsXml.xml
-#            **/target/pmd.xml
-#            **/target/checkstyle-result.xml
+            **/target/*.jar
+            !**/target/*-sources.jar
+            !**/target/*-javadoc.jar
 
-      # Опционально: собирать исполняемый "толстый" JAR на теги vX.Y.Z
-      - name: Build shaded JAR on tag
-        if: startsWith(github.ref, 'refs/tags/')
-        run: mvn -B -ntp -Puber -DskipTests=false clean package
-
-      - name: Upload shaded JAR (tag builds)
-        if: startsWith(github.ref, 'refs/tags/')
+      - name: Upload Javadoc (HTML)
+        if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: app-jar-${{ matrix.java }}
-          if-no-files-found: ignore
+          name: javadoc
+          if-no-files-found: warn
           path: |
-            **/target/*-shaded.jar
-            **/target/*-with-dependencies.jar
             **/target/site/apidocs/**
-            **/target/*-javadoc.jar
+
+      - name: Upload JaCoCo report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: jacoco-report
+          if-no-files-found: warn
+          path: |
+            **/target/site/jacoco/**
+            **/target/jacoco*.exec
+
+      - name: Upload SpotBugs report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: spotbugs-report
+          if-no-files-found: warn
+          path: |
+            **/target/site/spotbugs.html
+            **/target/spotbugsXml.xml
+
+      - name: Upload test reports
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: surefire-reports
+          if-no-files-found: warn
+          path: |
+            **/target/surefire-reports/**

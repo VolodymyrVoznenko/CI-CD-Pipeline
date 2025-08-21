@@ -194,9 +194,9 @@
                     <!-- падать сборке при найденных ошибках -->
                     <failOnError>true</failOnError>
 
-                    <!-- генерировать HTML и XML -->
+
                     <plugins>
-                        <!-- можно подключать доп. правила (необязательно) -->
+
                     </plugins>
                     <xmlOutput>true</xmlOutput>
                     <omitVisitors></omitVisitors>
