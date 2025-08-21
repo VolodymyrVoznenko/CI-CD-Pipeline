@@ -23,6 +23,7 @@
         <jacoco.version>0.8.12</jacoco.version>
         <maven.enforcer.version>3.5.0</maven.enforcer.version>
         <maven.jar.plugin.version>3.3.0</maven.jar.plugin.version>
+        <spotbugs.plugin.version>4.8.6.6</spotbugs.plugin.version>
 
         <!-- Main class -->
         <mainClass>de.winona.IBANChecker</mainClass>
@@ -177,6 +178,39 @@
                         <id>attach-javadocs-jar</id>
                         <phase>package</phase>
                         <goals><goal>jar</goal></goals>
+                    </execution>
+                </executions>
+            </plugin>
+
+            <plugin>
+                <groupId>com.github.spotbugs</groupId>
+                <artifactId>spotbugs-maven-plugin</artifactId>
+                <version>${spotbugs.plugin.version}</version>
+                <configuration>
+                    <!-- максимальная тщательность анализа -->
+                    <effort>Max</effort>
+                    <!-- порог чувствительности: Low|Medium|High (Low = ловит больше) -->
+                    <threshold>Low</threshold>
+                    <!-- падать сборке при найденных ошибках -->
+                    <failOnError>true</failOnError>
+
+                    <!-- генерировать HTML и XML -->
+                    <plugins>
+                        <!-- можно подключать доп. правила (необязательно) -->
+                    </plugins>
+                    <xmlOutput>true</xmlOutput>
+                    <omitVisitors></omitVisitors>
+
+                    <!-- анализировать тестовый код -->
+                    <!-- <includeTests>true</includeTests> -->
+                </configuration>
+                <executions>
+                    <execution>
+                        <id>spotbugs</id>
+                        <phase>verify</phase>
+                        <goals>
+                            <goal>check</goal>
+                        </goals>
                     </execution>
                 </executions>
             </plugin>

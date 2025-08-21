@@ -1,9 +1,6 @@
 package de.winona;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * Ein einfacher IBAN-Prüfer.
@@ -107,7 +104,7 @@ public class IBANChecker {
      */
     private static String convertToInteger(String iban) {
         StringBuilder convertedIban = new StringBuilder();
-        String upperIban = iban.toUpperCase();
+        String upperIban = iban.toUpperCase(Locale.ROOT);
         for (char c : upperIban.toCharArray()) {
             if (Character.isDigit(c)) {
                 convertedIban.append(c);
