@@ -1,0 +1,1 @@
+![CI](https://github.com/VolodymyrVoznenko/CI-CD-Pipeline/actions/workflows/ci.yml/badge.svg)
