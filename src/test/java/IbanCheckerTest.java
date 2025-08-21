@@ -32,4 +32,10 @@ public class IbanCheckerTest {
         String iban = "XX22790200760027913168";
         assertFalse(IBANChecker.validate(iban), "sollte ungültig sein (unbekannter Ländercode)");
     }
+
+    @Test
+    @DisplayName("Abdeckung des impliziten Klassenkonstruktors IBANChecker")
+    void coverDefaultConstructor() {
+        new IBANChecker();
+    }
 }

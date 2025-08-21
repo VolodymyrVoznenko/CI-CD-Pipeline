@@ -13,7 +13,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        java: ["24"] # при желании добавь "21"
+        java: ["21"] # при желании добавь "21"
 
     steps:
       - name: Checkout
@@ -38,7 +38,7 @@ jobs:
           path: |
             **/target/surefire-reports/*
             **/target/failsafe-reports/*
-#            **/target/site/jacoco/*
+            **/target/site/jacoco/*
 #            **/target/jacoco*.exec
 #            **/target/spotbugsXml.xml
 #            **/target/pmd.xml
