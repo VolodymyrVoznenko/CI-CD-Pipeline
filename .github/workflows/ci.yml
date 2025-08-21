@@ -40,8 +40,6 @@ jobs:
             **/target/failsafe-reports/*
             **/target/site/jacoco/*
             **/target/jacoco*.exec
-            **/target/site/apidocs/**
-            **/target/*-javadoc.jar
 #            **/target/spotbugsXml.xml
 #            **/target/pmd.xml
 #            **/target/checkstyle-result.xml
@@ -60,3 +58,5 @@ jobs:
           path: |
             **/target/*-shaded.jar
             **/target/*-with-dependencies.jar
+            **/target/site/apidocs/**
+            **/target/*-javadoc.jar
